@@ -43,7 +43,7 @@ class Kalman:
         k[1] = this.p[1][0]/s
 
         #Step 6: Update the Angle
-        angle += k[0] * y
+        this.angle += k[0] * y
         this.bias  += k[1] * y
 
         #Step 7: Calculate estimation error covariance - Update the error covariance
