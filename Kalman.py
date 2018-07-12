@@ -1,12 +1,12 @@
-class Kalman:
-    def __init__():
-        this.QAngle = 0.001
-        this.QBias = 0.003
-        this.RMeasure = 0.03
-        this.angle = 0.0
-        this.bias = 0.0
-        this.rate = 0.0
-        this.p=[[0.0,0.0],[0.0,0.0]]
+class KalmanAngle:
+    def __init__(self):
+        self.QAngle = 0.001
+        self.QBias = 0.003
+        self.RMeasure = 0.03
+        self.angle = 0.0
+        self.bias = 0.0
+        self.rate = 0.0
+        self.P=[[0.0,0.0],[0.0,0.0]]
 
     '''def kalman():
         QAngle = 0.001
@@ -16,67 +16,68 @@ class Kalman:
         angle = 0.0
         bias = 0.0
 
-        p[0][0] = 0.0
-        p[0][1] = 0.0
-        p[1][0] = 0.0
-        p[1][1] = 0.0'''
+        P[0][0] = 0.0
+        P[0][1] = 0.0
+        P[1][0] = 0.0
+        P[1][1] = 0.0'''
 
-    def getAngle(newAngle, newRate,dt):
+    def getAngle(self,newAngle, newRate,dt):
         #step 1:
-        this.rate = newRate - this.bias;    #new_rate is the latest Gyro measurement
-        this.angle += dt * this.rate;
+        self.rate = newRate - self.bias;    #new_rate is the latest Gyro measurement
+        self.angle += dt * self.rate;
 
         #Step 2:
-        this.p[0][0] += dt * (dt*this.p[1][1] -this.p[0][1] - this.p[1][0] + this.QAngle)
-        this.p[0][1] -= dt * this.p[1][1]
-        this.p[1][0] -= dt * this.p[1][1]
-        this.p[1][1] += this.QBias * dt
+        self.P[0][0] += dt * (dt*self.P[1][1] -self.P[0][1] - self.P[1][0] + self.QAngle)
+        self.P[0][1] -= dt * self.P[1][1]
+        self.P[1][0] -= dt * self.P[1][1]
+        self.P[1][1] += self.QBias * dt
 
         #Step 3: Innovation
-        y = newAngle - this.angle
+        y = newAngle - self.angle
 
         #Step 4: Innovation covariance
-        s = this.p[0][0] + this.RMeasure
+        s = self.P[0][0] + self.RMeasure
 
         #Step 5:    Kalman Gain
-        k[0] = this.p[0][0]/s
-        k[1] = this.p[1][0]/s
+        K=[0.0,0.0]
+        K[0] = self.P[0][0]/s
+        K[1] = self.P[1][0]/s
 
         #Step 6: Update the Angle
-        this.angle += k[0] * y
-        this.bias  += k[1] * y
+        self.angle += K[0] * y
+        self.bias  += K[1] * y
 
         #Step 7: Calculate estimation error covariance - Update the error covariance
-        p00Temp = this.p[0][0]
-        p01Temp = this.p[0][1]
+        P00Temp = self.P[0][0]
+        P01Temp = self.P[0][1]
 
-        this.P[0][0] -= K[0] * P00Temp;
-        this.P[0][1] -= K[0] * P01Temp;
-        this.P[1][0] -= K[1] * P00Temp;
-        this.P[1][1] -= K[1] * P01Temp;
+        self.P[0][0] -= K[0] * P00Temp;
+        self.P[0][1] -= K[0] * P01Temp;
+        self.P[1][0] -= K[1] * P00Temp;
+        self.P[1][1] -= K[1] * P01Temp;
 
-        return Angle
+        return self.angle
 
-    def setAngle(angle):
-        this.angle = angle
+    def setAngle(self,angle):
+        self.angle = angle
 
-    def setQAngle(QAngle):
-        this.QAngle = QAngle
+    def setQAngle(self,QAngle):
+        self.QAngle = QAngle
 
-    def setQBias(QBias):
-        this.QBias = QBias
+    def setQBias(self,QBias):
+        self.QBias = QBias
 
-    def setRMeasure(RMeasure):
-        this.RMeasure = RMeasure
+    def setRMeasure(self,RMeasure):
+        self.RMeasure = RMeasure
 
     def getRate():
-        return this.rate
+        return self.rate
 
     def getQAngle():
-        return this.QAngle
+        return self.QAngle
 
     def getQBias():
-        return this.QBias
+        return self.QBias
 
     def  getRMeasure():
-        return this.RMeasure
+        return self.RMeasure
