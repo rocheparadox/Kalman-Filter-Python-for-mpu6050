@@ -94,9 +94,10 @@ compAngleY = pitch;
 timer = time.time()
 flag = 0
 while True:
-	if(flag >5): #Problem with the connection
+	if(flag >100): #Problem with the connection
 		print("There is a problem with the connection")
-		break
+		flag=0
+		continue
 	try:
 	    #Read Accelerometer raw value
 	    accX = read_raw_data(ACCEL_XOUT_H)
@@ -163,5 +164,5 @@ while True:
 	    #print(str(roll)+"  "+str(gyroXAngle)+"  "+str(compAngleX)+"  "+str(kalAngleX)+"  "+str(pitch)+"  "+str(gyroYAngle)+"  "+str(compAngleY)+"  "+str(kalAngleY))
 	    time.sleep(0.005)
 
-	except (Exception exc):
+	except Exception as exc:
 		flag += 1
