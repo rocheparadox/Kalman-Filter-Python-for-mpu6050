@@ -1,0 +1,2 @@
+http://www.electronicwings.com/raspberry-pi/python-based-i2c-functions-for-raspberry-pi
+http://www.electronicwings.com/raspberry-pi/mpu6050-accelerometergyroscope-interfacing-with-raspberry-pi
