@@ -1,3 +1,11 @@
+#Connections
+#MPU6050 - Raspberry pi
+#VCC - 5V  (2 or 4 Board)
+#GND - GND (6 - Board)
+#SCL - SCL (5 - Board)
+#SDA - SDA (3 - Board)
+
+
 from Kalman import KalmanAngle
 import smbus			#import SMBus module of I2C
 import time
