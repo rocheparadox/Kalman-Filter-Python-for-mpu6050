@@ -14,7 +14,7 @@ import math
 kalmanX = KalmanAngle()
 kalmanY = KalmanAngle()
 
-RestrictPitch = True
+RestrictPitch = True	#Comment out to restrict roll to ±90deg instead - please read: http://www.freescale.com/files/sensors/doc/app_note/AN3461.pdf
 radToDeg = 57.2957786
 kalAngleX = 0
 kalAngleY = 0
@@ -149,9 +149,11 @@ while True:
 	            gyroXRate  = -gyroXRate
 	            kalAngleX = kalmanX.getAngle(roll,gyroXRate,dt)
 
+		#angle = (rate of change of angle) * change in time
 	    gyroXAngle = gyroXRate * dt
 	    gyroYAngle = gyroYAngle * dt
 
+		#compAngle = constant * (old_compAngle + angle_obtained_from_gyro) + constant * angle_obtained from accelerometer
 	    compAngleX = 0.93 * (compAngleX + gyroXRate * dt) + 0.07 * roll
 	    compAngleY = 0.93 * (compAngleY + gyroYRate * dt) + 0.07 * pitch
 
