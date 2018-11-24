@@ -1,3 +1,4 @@
+#Kalman Filter
 class KalmanAngle:
     def __init__(self):
         self.QAngle = 0.001
@@ -70,14 +71,14 @@ class KalmanAngle:
     def setRMeasure(self,RMeasure):
         self.RMeasure = RMeasure
 
-    def getRate():
+    def getRate(self):
         return self.rate
 
-    def getQAngle():
+    def getQAngle(self):
         return self.QAngle
 
-    def getQBias():
+    def getQBias(self):
         return self.QBias
 
-    def  getRMeasure():
+    def  getRMeasure(self):
         return self.RMeasure
