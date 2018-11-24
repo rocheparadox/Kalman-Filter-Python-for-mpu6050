@@ -10,6 +10,7 @@ from Kalman import KalmanAngle
 import smbus			#import SMBus module of I2C
 import time
 import math
+import threading
 
 
 class AngleMeterAlpha:
@@ -182,3 +183,7 @@ class AngleMeterAlpha:
 			self.MPU_Init()
 			self.bus = smbus.SMBus(1)  # or bus = smbus.SMBus(0) for older version boards
 			self.DeviceAddress = 0x68  # MPU6050 device address
+
+		def measure(self):
+			angleThread = threading.Thread(target=self.measureAngles)
+			angleThread.start()
