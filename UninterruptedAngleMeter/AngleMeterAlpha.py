@@ -161,7 +161,10 @@ class AngleMeter:
 			    if ((gyroYAngle < -180) or (gyroYAngle > 180)):
 			        gyroYAngle = kalAngleY
 
-				print("Angle X: " + str(kalAngleX) + "   " + "Angle Y: " + str(kalAngleY))
+				print("Angle X: " + str(kalAngleX)+"   " +"Angle Y: " + str(kalAngleY))
+				self.pitch = kalAngleY
+				self.roll = kalAngleX
+
 
 			except Exception as exception:
 				flag +=1
