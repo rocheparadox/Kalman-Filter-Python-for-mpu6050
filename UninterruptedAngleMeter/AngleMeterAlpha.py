@@ -22,33 +22,32 @@ class AngleMeter:
 		GYRO_CONFIG  = 0x1B
 		INT_ENABLE   = 0x38
 		#write to sample rate register
-		bus.write_byte_data(self.DeviceAddress, SMPLRT_DIV, 7)
+		self.bus.write_byte_data(self.DeviceAddress, SMPLRT_DIV, 7)
 
 		#Write to power management register
-		bus.write_byte_data(self.DeviceAddress, PWR_MGMT_1, 1)
+		self.bus.write_byte_data(self.DeviceAddress, PWR_MGMT_1, 1)
 
 		#Write to Configuration register
-		bus.write_byte_data(self.DeviceAddress, CONFIG, 0)
+		self.bus.write_byte_data(self.DeviceAddress, CONFIG, 0)
 
 		#Write to Gyro configuration register
-		bus.write_byte_data(self.DeviceAddress, GYRO_CONFIG, 24)
+		self.bus.write_byte_data(self.DeviceAddress, GYRO_CONFIG, 24)
 
 		#Write to interrupt enable register
-		bus.write_byte_data(self.DeviceAddress, INT_ENABLE, 1)
-
+		self.bus.write_byte_data(self.DeviceAddress, INT_ENABLE, 1)
 
 	def read_raw_data(self,addr):
-		#Accelero and Gyro value are 16-bit
-        high = bus.read_byte_data(self.DeviceAddress, addr)
-        low = bus.read_byte_data(self.DeviceAddress, addr+1)
+		# Accelero and Gyro value are 16-bit
+		high = self.bus.read_byte_data(self.DeviceAddress, addr)
+		low = self.bus.read_byte_data(self.DeviceAddress, addr + 1)
 
-        #concatenate higher and lower value
-        value = ((high << 8) | low)
+		# concatenate higher and lower value
+		value = ((high << 8) | low)
 
-        #to get signed value from mpu6050
-        if(value > 32768):
-                value = value - 65536
-        return value
+		# to get signed value from mpu6050
+		if (value > 32768):
+			value = value - 65536
+		return value
 
 	def measureAngles(self):
 
@@ -69,9 +68,9 @@ class AngleMeter:
 
 		time.sleep(1)
 		#Read Accelerometer raw value
-		accX = read_raw_data(ACCEL_XOUT_H)
-		accY = read_raw_data(ACCEL_YOUT_H)
-		accZ = read_raw_data(ACCEL_ZOUT_H)
+		accX = self.read_raw_data(ACCEL_XOUT_H)
+		accY = self.read_raw_data(ACCEL_YOUT_H)
+		accZ = self.read_raw_data(ACCEL_ZOUT_H)
 
 		#print(accX,accY,accZ)
 		#print(math.sqrt((accY**2)+(accZ**2)))
@@ -100,14 +99,14 @@ class AngleMeter:
 				continue
 			try:
 			    #Read Accelerometer raw value
-			    accX = read_raw_data(ACCEL_XOUT_H)
-			    accY = read_raw_data(ACCEL_YOUT_H)
-			    accZ = read_raw_data(ACCEL_ZOUT_H)
+			    accX = self.read_raw_data(ACCEL_XOUT_H)
+			    accY = self.read_raw_data(ACCEL_YOUT_H)
+			    accZ = self.read_raw_data(ACCEL_ZOUT_H)
 
 			    #Read Gyroscope raw value
-			    gyroX = read_raw_data(GYRO_XOUT_H)
-			    gyroY = read_raw_data(GYRO_YOUT_H)
-			    gyroZ = read_raw_data(GYRO_ZOUT_H)
+			    gyroX = self.read_raw_data(GYRO_XOUT_H)
+			    gyroY = self.read_raw_data(GYRO_YOUT_H)
+			    gyroZ = self.read_raw_data(GYRO_ZOUT_H)
 
 			    dt = time.time() - timer
 			    timer = time.time()
@@ -162,22 +161,17 @@ class AngleMeter:
 			    if ((gyroYAngle < -180) or (gyroYAngle > 180)):
 			        gyroYAngle = kalAngleY
 
+				print("Angle X: " + str(kalAngleX) + "   " + "Angle Y: " + str(kalAngleY))
 
-			    print("Angle X: " + str(kalAngleX)+"   " +"Angle Y: " + str(kalAngleY))
-				self.roll = kalAngleX
-				self.pitch= kalAngleY
-				#print(str(roll)+"  "+str(gyroXAngle)+"  "+str(compAngleX)+"  "+str(kalAngleX)+"  "+str(pitch)+"  "+str(gyroYAngle)+"  "+str(compAngleY)+"  "+str(kalAngleY))
-			    time.sleep(0.005)
-
-			except Exception as exc:
-				flag += 1
+			except Exception as exception:
+				flag +=1
 
 	def __init__(self):
 		self.pitch = 0
 		self.roll  = 0
 		self.bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 		self.DeviceAddress = 0x68   # MPU6050 device address
-		MPU_Init()
+		self.MPU_Init()
 
 	def getPitch(self):
 		return self.pitch
