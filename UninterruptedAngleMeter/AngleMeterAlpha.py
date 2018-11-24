@@ -187,3 +187,9 @@ class AngleMeterAlpha:
 		def measure(self):
 			angleThread = threading.Thread(target=self.measureAngles)
 			angleThread.start()
+
+		def getRoll(self):
+			return self.roll
+
+		def getPitch(self):
+			return self.pitch
