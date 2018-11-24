@@ -1,4 +1,4 @@
-#Kalman Filter
+#Kalman Filter MPU6050
 class KalmanAngle:
     def __init__(self):
         self.QAngle = 0.001
