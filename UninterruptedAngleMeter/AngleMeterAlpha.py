@@ -168,9 +168,9 @@ class AngleMeterAlpha:
 							if ((gyroYAngle < -180) or (gyroYAngle > 180)):
 								gyroYAngle = kalAngleY
 
-							print("Angle X: " + str(kalAngleX)+"   " +"Angle Y: " + str(kalAngleY))
-							self.pitch = kalAngleY
-							self.roll  = kalAngleY
+							print("Angle X: " + str(complAngleX)+"   " +"Angle Y: " + str(complAngleY))
+							self.pitch = complAngleY
+							self.roll  = compAngleX
 							#print(str(roll)+"  "+str(gyroXAngle)+"  "+str(compAngleX)+"  "+str(kalAngleX)+"  "+str(pitch)+"  "+str(gyroYAngle)+"  "+str(compAngleY)+"  "+str(kalAngleY))
 							time.sleep(0.005)
 
@@ -193,3 +193,9 @@ class AngleMeterAlpha:
 
 		def getPitch(self):
 			return self.pitch
+
+		def get_int_pitch(self):
+			return int(self.pitch)
+
+		def get_int_roll(self):
+			return int(self.roll)
