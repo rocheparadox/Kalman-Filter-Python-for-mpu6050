@@ -171,6 +171,11 @@ class AngleMeterAlpha:
 							print("Angle X: " + str(complAngleX)+"   " +"Angle Y: " + str(complAngleY))
 							self.pitch = complAngleY
 							self.roll  = compAngleX
+
+							self.kalman_pitch = kalmanY
+							self.kalman_roll = kalmanX
+							self.compl_pitch = complAngleY
+							self.compl_roll = compAngleX
 							#print(str(roll)+"  "+str(gyroXAngle)+"  "+str(compAngleX)+"  "+str(kalAngleX)+"  "+str(pitch)+"  "+str(gyroYAngle)+"  "+str(compAngleY)+"  "+str(kalAngleY))
 							time.sleep(0.005)
 
@@ -183,6 +188,10 @@ class AngleMeterAlpha:
 			self.MPU_Init()
 			self.bus = smbus.SMBus(1)  # or bus = smbus.SMBus(0) for older version boards
 			self.DeviceAddress = 0x68  # MPU6050 device address
+			self.compl_pitch
+			self.compl_roll
+			self.kalman_pitch
+			self.kalman_roll
 
 		def measure(self):
 			angleThread = threading.Thread(target=self.measureAngles)
@@ -199,3 +208,15 @@ class AngleMeterAlpha:
 
 		def get_int_roll(self):
 			return int(self.roll)
+
+		def get_complementary_roll(self):
+			return self.compl_roll
+
+		def get_complementary_roll(self):
+			return self.compl_roll
+
+		def get_kalman_roll(self):
+			return self.kalman_roll
+
+		def get_kalman_pitch(self):
+			return self.kalman_pitch
