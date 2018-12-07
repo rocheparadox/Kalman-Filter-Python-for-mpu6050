@@ -7,7 +7,7 @@
 
 
 from Kalman import KalmanAngle
-import smbus			#import SMBus module of I2C
+import smbus2			#import SMBus module of I2C
 import time
 import math
 import threading
@@ -52,7 +52,7 @@ class AngleMeterAlpha:
 				return value
 
 
-		bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
+		bus = smbus2.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 		DeviceAddress = 0x68   # MPU6050 device address
 
 		def measureAngles(self):
@@ -87,7 +87,7 @@ class AngleMeterAlpha:
 				else:
 					roll = math.atan(accY / math.sqrt((accX ** 2) + (accZ ** 2))) * radToDeg
 					pitch = math.atan2(-accX, accZ) * radToDeg
-				print(roll)
+				#print(roll)
 				kalmanX.setAngle(roll)
 				kalmanY.setAngle(pitch)
 				gyroXAngle = roll;
@@ -138,7 +138,7 @@ class AngleMeterAlpha:
 								else:
 									kalAngleX = kalmanX.getAngle(roll,gyroXRate,dt)
 
-								if(abs(kalAngleX)>90):
+								if(abs(kalAngleY)>90 or True):
 									gyroYRate  = -gyroYRate
 									kalAngleY  = kalmanY.getAngle(pitch,gyroYRate,dt)
 							else:
@@ -151,7 +151,7 @@ class AngleMeterAlpha:
 								else:
 									kalAngleY = kalmanY.getAngle(pitch,gyroYRate,dt)
 
-								if(abs(kalAngleY)>90):
+								if(abs(kalAngleX)>90):
 									gyroXRate  = -gyroXRate
 									kalAngleX = kalmanX.getAngle(roll,gyroXRate,dt)
 
@@ -168,30 +168,33 @@ class AngleMeterAlpha:
 							if ((gyroYAngle < -180) or (gyroYAngle > 180)):
 								gyroYAngle = kalAngleY
 
-							print("Angle X: " + str(complAngleX)+"   " +"Angle Y: " + str(complAngleY))
-							self.pitch = complAngleY
+							#print("Angle X: " + str(complAngleX)+"   " +"Angle Y: " + str(complAngleY))
+							self.pitch = compAngleY
 							self.roll  = compAngleX
 
-							self.kalman_pitch = kalmanY
-							self.kalman_roll = kalmanX
-							self.compl_pitch = complAngleY
+							self.kalman_pitch = kalAngleY
+							self.kalman_roll = kalAngleX
+							self.compl_pitch = compAngleY
 							self.compl_roll = compAngleX
 							#print(str(roll)+"  "+str(gyroXAngle)+"  "+str(compAngleX)+"  "+str(kalAngleX)+"  "+str(pitch)+"  "+str(gyroYAngle)+"  "+str(compAngleY)+"  "+str(kalAngleY))
 							time.sleep(0.005)
 
 						except Exception as exc:
-							flag += 1
+                                                    if(flag == 100):
+                                                        print(exc)
+                                                    flag +=1
+							
 
 		def __init__(self):
 			self.pitch=0
 			self.roll = 0
 			self.MPU_Init()
-			self.bus = smbus.SMBus(1)  # or bus = smbus.SMBus(0) for older version boards
+			self.bus = smbus2.SMBus(1)  # or bus = smbus.SMBus(0) for older version boards
 			self.DeviceAddress = 0x68  # MPU6050 device address
-			self.compl_pitch
-			self.compl_roll
-			self.kalman_pitch
-			self.kalman_roll
+			self.compl_pitch = 0
+			self.compl_roll = 0
+			self.kalman_pitch = 0
+			self.kalman_roll = 0
 
 		def measure(self):
 			angleThread = threading.Thread(target=self.measureAngles)
@@ -210,13 +213,13 @@ class AngleMeterAlpha:
 			return int(self.roll)
 
 		def get_complementary_roll(self):
-			return self.compl_roll
+			return int(self.compl_roll)
 
-		def get_complementary_roll(self):
-			return self.compl_roll
+		def get_complementary_pitch(self):
+			return int(self.compl_pitch)
 
 		def get_kalman_roll(self):
-			return self.kalman_roll
+			return int(self.kalman_roll)
 
 		def get_kalman_pitch(self):
-			return self.kalman_pitch
+			return int(self.kalman_pitch)
