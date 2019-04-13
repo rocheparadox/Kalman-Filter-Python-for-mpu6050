@@ -41,7 +41,8 @@ def MPU_Init():
 	bus.write_byte_data(DeviceAddress, PWR_MGMT_1, 1)
 
 	#Write to Configuration register
-	bus.write_byte_data(DeviceAddress, CONFIG, 0)
+	#Setting DLPF (last three bit of 0X1A to 6 i.e '110' It removes the noise due to vibration.) https://ulrichbuschbaum.wordpress.com/2015/01/18/using-the-mpu6050s-dlpf/
+	bus.write_byte_data(DeviceAddress, CONFIG, int('0000110',2))
 
 	#Write to Gyro configuration register
 	bus.write_byte_data(DeviceAddress, GYRO_CONFIG, 24)
